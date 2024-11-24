@@ -1,0 +1,52 @@
+[gd_scene load_steps=8 format=3 uid="uid://bqqthn8slmuw0"]
+
+[ext_resource type="Script" path="res://Script/Sandbox.gd" id="1_iwbfw"]
+[ext_resource type="PackedScene" uid="uid://n0sc0vyqs5v3" path="res://Scenes/Enemy.tscn" id="1_oaq17"]
+[ext_resource type="AudioStream" uid="uid://cyvpf6vj8xjr8" path="res://Music/just piano for experiment.mp3" id="3_f8rsf"]
+[ext_resource type="AudioStream" uid="uid://cyw0v04s4nrba" path="res://Music/Guitar Always Play.mp3" id="4_rs5q4"]
+[ext_resource type="AudioStream" uid="uid://mm0rwv5g2hqt" path="res://Music/Flute1.mp3" id="5_dvset"]
+[ext_resource type="AudioStream" uid="uid://bbd3x8jb7ddqb" path="res://Music/Exatra Guitar.mp3" id="6_nx56x"]
+
+[sub_resource type="GDScript" id="GDScript_gwbpp"]
+script/source = "extends Camera2D
+
+
+# Called when the node enters the scene tree for the first time.
+func _ready() -> void:
+	pass # Replace with function body.
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta: float) -> void:
+	pass
+"
+
+[node name="Node2D" type="Node2D"]
+script = ExtResource("1_iwbfw")
+
+[node name="Enemy" parent="." instance=ExtResource("1_oaq17")]
+
+[node name="Camera2D" type="Camera2D" parent="."]
+script = SubResource("GDScript_gwbpp")
+
+[node name="JustPianoForExperiment" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_f8rsf")
+volume_db = -80.0
+autoplay = true
+parameters/looping = true
+
+[node name="GuitarAlwaysPlay" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_rs5q4")
+volume_db = 5.0
+autoplay = true
+parameters/looping = true
+
+[node name="Flute1" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_dvset")
+volume_db = -80.0
+autoplay = true
+parameters/looping = true
+
+[node name="ExatraGuitar" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("6_nx56x")
+volume_db = -80.0

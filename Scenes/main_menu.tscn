@@ -1,0 +1,119 @@
+[gd_scene load_steps=10 format=3 uid="uid://dmifstah0164b"]
+
+[ext_resource type="Texture2D" uid="uid://b0aotkhxja8lu" path="res://Sprites/PLAY_1.png" id="1_amxch"]
+[ext_resource type="Script" path="res://Script/start.gd" id="2_6ke0g"]
+[ext_resource type="Texture2D" uid="uid://cv3o5t1q774nn" path="res://Sprites/Black_Border.png" id="3_cfwv3"]
+[ext_resource type="AudioStream" uid="uid://brwt27an6ggdj" path="res://Music/menu v2.mp3" id="5_kog0b"]
+[ext_resource type="Texture2D" uid="uid://b3k2ytycdtb3o" path="res://Sprite Sheets/Sheriff.png" id="6_chn7r"]
+[ext_resource type="Script" path="res://Script/Cutscene1.gd" id="6_pprtv"]
+
+[sub_resource type="Animation" id="Animation_2a3s4"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Start:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-198, -47.5)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Pillar:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_1i746"]
+resource_name = "Starting Cutscene"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Start:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(2, 1),
+"update": 0,
+"values": [Vector2(-250, -250), Vector2(-250, -1450)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Pillar:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(2, 1),
+"update": 0,
+"values": [Vector2(0, -200), Vector2(0, -1400)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_wd1q3"]
+_data = {
+"RESET": SubResource("Animation_2a3s4"),
+"Starting Cutscene": SubResource("Animation_1i746")
+}
+
+[node name="MainMenu" type="Node2D"]
+
+[node name="Camera" type="Camera2D" parent="."]
+
+[node name="Start" type="Button" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -250.0
+offset_top = -250.0
+offset_right = 270.0
+offset_bottom = 270.0
+grow_horizontal = 2
+grow_vertical = 2
+icon = ExtResource("1_amxch")
+flat = true
+icon_alignment = 1
+script = ExtResource("2_6ke0g")
+
+[node name="Pillar" type="Sprite2D" parent="."]
+modulate = Color(1, 1, 1, 0.25098)
+z_index = -1
+scale = Vector2(5, 5)
+texture = ExtResource("3_cfwv3")
+
+[node name="MenuTheme" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_kog0b")
+volume_db = 15.45
+autoplay = true
+parameters/looping = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_wd1q3")
+}
+script = ExtResource("6_pprtv")
+
+[node name="Background" type="Sprite2D" parent="."]
+visible = false
+z_index = -3
+scale = Vector2(2.4, 1)
+texture = ExtResource("6_chn7r")
+hframes = 2
+vframes = 2
+
+[connection signal="cutscene" from="Start" to="Start" method="_on_cutscene"]
+[connection signal="cutscene" from="Start" to="Pillar" method="_on_start_cutscene"]
+[connection signal="cutscene" from="Start" to="AnimationPlayer" method="_on_start_cutscene"]
+[connection signal="pressed" from="Start" to="Start" method="_on_pressed"]
+[connection signal="animation_finished" from="AnimationPlayer" to="AnimationPlayer" method="_on_animation_finished"]

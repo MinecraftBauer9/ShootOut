@@ -1,0 +1,18 @@
+[gd_scene load_steps=4 format=3 uid="uid://dnpg113dfefl5"]
+
+[ext_resource type="Texture2D" uid="uid://bjoux4kyjwcl1" path="res://Sprites/Deputy Grasshopper v1.png" id="1_a2d7u"]
+[ext_resource type="Script" path="res://Script/EnemyMain.gd" id="1_qu33k"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_t6gxd"]
+size = Vector2(24, 56)
+
+[node name="EnemyMain" type="CharacterBody2D"]
+script = ExtResource("1_qu33k")
+
+[node name="Hitbox" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_t6gxd")
+
+[node name="TopDown" type="Sprite2D" parent="."]
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("1_a2d7u")
+flip_v = true

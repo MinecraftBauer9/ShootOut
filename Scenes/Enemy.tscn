@@ -1,0 +1,133 @@
+[gd_scene load_steps=13 format=3 uid="uid://n0sc0vyqs5v3"]
+
+[ext_resource type="Script" path="res://Script/EnemyCasual.gd" id="1_obtng"]
+[ext_resource type="Texture2D" uid="uid://bosctgd5fkwb6" path="res://Sprites/Enemy_Revolver.png" id="2_0umw5"]
+[ext_resource type="Texture2D" uid="uid://dh5wlu7ias5w2" path="res://Sprite Sheets/Not_Evil_Honse_Spritesheet.png" id="3_oo467"]
+[ext_resource type="Script" path="res://Script/EnemyDeath.gd" id="4_lw7sm"]
+[ext_resource type="Texture2D" uid="uid://bid2jijfi1bg5" path="res://Sprite Sheets/Death.png" id="5_q4l04"]
+
+[sub_resource type="Animation" id="Animation_kbbft"]
+resource_name = "Horsey"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame_coords")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.233333, 0.266667, 0.5, 0.733333),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [Vector2i(0, 0), Vector2i(4, 0), Vector2i(0, 1), Vector2i(3, 1), Vector2i(2, 2)]
+}
+
+[sub_resource type="Animation" id="Animation_dupve"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame_coords")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [Vector2i(0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_d8j3b"]
+_data = {
+"Horsey": SubResource("Animation_kbbft"),
+"RESET": SubResource("Animation_dupve")
+}
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_gcr1w"]
+size = Vector2(64, 64)
+
+[sub_resource type="Animation" id="Animation_tb3a6"]
+resource_name = "Death"
+length = 0.6
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame_coords")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [Vector2i(0, 0), Vector2i(1, 0), Vector2i(2, 0), Vector2i(0, 1), Vector2i(1, 1), Vector2i(2, 1), Vector2i(0, 2)]
+}
+
+[sub_resource type="Animation" id="Animation_gfslb"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame_coords")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [Vector2i(0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_5b68m"]
+_data = {
+"Death": SubResource("Animation_tb3a6"),
+"RESET": SubResource("Animation_gfslb")
+}
+
+[node name="Enem" type="CharacterBody2D"]
+z_index = 1
+collision_layer = 193
+collision_mask = 128
+script = ExtResource("1_obtng")
+
+[node name="TopDown" type="Sprite2D" parent="."]
+position = Vector2(0, 6)
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("2_0umw5")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+z_index = -1
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("3_oo467")
+hframes = 5
+vframes = 4
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Sprite2D"]
+libraries = {
+"": SubResource("AnimationLibrary_d8j3b")
+}
+autoplay = "Horsey"
+
+[node name="Enemy" type="Area2D" parent="."]
+collision_layer = 193
+collision_mask = 128
+script = ExtResource("4_lw7sm")
+
+[node name="Enemy" type="CollisionShape2D" parent="Enemy"]
+position = Vector2(0, -6)
+shape = SubResource("RectangleShape2D_gcr1w")
+
+[node name="Dissapear" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(7, -15)
+texture = ExtResource("5_q4l04")
+hframes = 3
+vframes = 3
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Dissapear"]
+libraries = {
+"": SubResource("AnimationLibrary_5b68m")
+}
+
+[connection signal="area_entered" from="Enemy" to="Enemy" method="_on_area_entered"]
+[connection signal="body_entered" from="Enemy" to="Enemy" method="_on_body_entered"]
+[connection signal="died" from="Enemy" to="." method="_on_enemy_died"]

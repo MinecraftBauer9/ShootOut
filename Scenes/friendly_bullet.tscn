@@ -1,0 +1,28 @@
+[gd_scene load_steps=4 format=3 uid="uid://dpi55l62s7q6e"]
+
+[ext_resource type="Script" path="res://Script/FriendlyBullet.gd" id="1_lcepy"]
+[ext_resource type="Texture2D" uid="uid://bhuh5hvkxi65p" path="res://Sprites/Bullet_Fired_Upscaled_Better.png" id="2_vmy11"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_06clk"]
+size = Vector2(18, 17)
+
+[node name="FriendlyBullet" type="CharacterBody2D"]
+collision_layer = 128
+collision_mask = 128
+motion_mode = 1
+script = ExtResource("1_lcepy")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(2, 0)
+scale = Vector2(0.35, 0.35)
+texture = ExtResource("2_vmy11")
+
+[node name="FriendB" type="Area2D" parent="."]
+collision_layer = 128
+collision_mask = 128
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FriendB"]
+position = Vector2(1, 1.5)
+shape = SubResource("RectangleShape2D_06clk")
+
+[connection signal="area_entered" from="FriendB" to="." method="_on_friend_b_area_entered"]
